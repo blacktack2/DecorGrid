@@ -37,7 +37,7 @@ const String webpageHtml = R"(
 
   <p>
     To update your code type this into your address bar:<br>
-    <a href="http://)" + OTAHandler::getCurrentURL() + R"(/update" target="_blank">http://)" + OTAHandler::getCurrentURL() + R"(/update</a><br>
+    <a id="update-link" href="" target="_blank"></a><br>
     or just click this link.
   </p>
 
@@ -52,6 +52,11 @@ const String webpageHtml = R"(
       xhttp.open("GET", "/print_debug", true);
       xhttp.send();
     }
+
+    const baseURL = window.location.origin;
+    const updateLink = document.getElementById("update-link");
+    updateLink.innerHTML = baseURL + "/update";
+    updateLink.href = baseURL + "/update";
   </script>
 </body>
 </html>
