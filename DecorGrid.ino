@@ -40,6 +40,19 @@ const String webpageHtml = R"(
     <a href="http://)" + OTAHandler::getCurrentURL() + R"(/update" target="_blank">http://)" + OTAHandler::getCurrentURL() + R"(/update</a><br>
     or just click this link.
   </p>
+
+  <button id="hello-button" onclick="helloThere();">Hello</button>
+
+  <script>
+    function helloThere() {
+      const xhttp = new XMLHttpRequest();
+      xhttp.onload = function() {
+        document.getElementById("hello-button").innerHTML = this.responseText;
+      }
+      xhttp.open("GET", "/print_debug", true);
+      xhttp.send();
+    }
+  </script>
 </body>
 </html>
 )";
@@ -49,7 +62,7 @@ const char* PASS = SECRET_PASS;
 
 OTAHandler otaHandler(SSID, PASS);
 
-LEDGrid grid(2, 2, 4);
+LEDGrid grid(24, 24, 4);
 //RainbowRenderer renderer = RainbowRenderer(grid);
 RainbowRenderer renderer = RainbowRenderer(grid);
 
@@ -71,8 +84,10 @@ void setup() {
 
 void loop() {
   grid.clearPixels();
-  renderer.updateGrid();
+  grid.showPixels();
+//  renderer.updateGrid();
+  grid.setRGBAll(100, 0, 0);
   grid.showPixels();
 
-  delay(30);
+  delay(100);
 }

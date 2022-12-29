@@ -10,7 +10,7 @@ void RainbowRenderer::updateGrid() {
 
 void RainbowRenderer::updateFlat() {
   mHue = (mHue + 100) % 65535;
-  mGrid.setHSVAll(mHue, 255, 10);
+  mGrid.setHSVAll(mHue, 255, 5);
 }
 
 void RainbowRenderer::updateRings() {

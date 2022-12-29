@@ -33,7 +33,6 @@ void LEDGrid::setHSVAll(hue_channel_t h, color_channel_t s, color_channel_t v) {
 }
 
 void LEDGrid::clearPixels() {
-  Serial.println("Clearing Grid.");
   mPixels.clear();
 }
 

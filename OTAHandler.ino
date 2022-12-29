@@ -50,6 +50,10 @@ void OTAHandler::init(const String& html) {
     Serial.println("Sent main response.");
   });
 
+  mServer->on("/print_debug", HTTP_GET, [](AsyncWebServerRequest* request) {
+    request->send(200, "text/plain", "Yo");
+  });
+
   AsyncElegantOTA.begin(mServer);
   mServer->begin();
 
