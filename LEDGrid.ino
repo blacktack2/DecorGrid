@@ -1,7 +1,7 @@
 #include "LEDGrid.h"
 
 LEDGrid::LEDGrid(pixel_t width, pixel_t height, pin_t ledPin) :
-mPixels(width * height, ledPin, NEO_GRB | NEO_KHZ800), mWidth(width), mHeight(height) {
+mPixels(width * height, ledPin, NEO_BRG | NEO_KHZ800), mWidth(width), mHeight(height) {
   
 }
 
