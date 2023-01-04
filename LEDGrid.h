@@ -16,6 +16,9 @@ public:
 
   void init();
 
+  void setRGB(pixel_t index, color_channel_t r, color_channel_t g, color_channel_t b);
+  void setHSV(pixel_t index, hue_channel_t h, color_channel_t s, color_channel_t v);
+
   void setRGB(pixel_t pixelX, pixel_t pixelY, color_channel_t r, color_channel_t g, color_channel_t b);
   void setHSV(pixel_t pixelX, pixel_t pixelY, hue_channel_t h, color_channel_t s, color_channel_t v);
 

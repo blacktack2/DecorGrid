@@ -1,75 +1,23 @@
-#include "arduino_secrets.h"
-
 #include "LEDGrid.h"
-
-#include "OTAHandler.h"
 
 #include "Renderer.h"
 #include "CARenderer.h"
 #include "RainbowRenderer.h"
 
-const String webpageHtml = R"(
-<!DOCTYPE HTML>
-<head><title>LED Grid</title></head>
-<body style="font-size: 1.1em;">
-  <h3>Arduino ESP OTA Home Page</h3>
-
-  <div>
-    Project: LED Grid
-  </div>
-
-  <fieldset style="margin: 20px 5px 20px 5px; border: 1px solid darkgray; border-radius: 5px; background-color: white;">
-    <legend style="font-size: 0.8em;">Project description:</legend>
-    <div style="font-size: 0.8em; background-color: #EEEEEE; padding: 5px; border-radius: 10px;">
-      Description goes here...
-    </div>
-  </fieldset>
-
-  <p>
-    To update your device from the Arduino IDE choose:
-    <ul>
-      <li><b>Sketch->Export compiled Binary</b></li>
-      <li>then find the sketch folder by choosing</li>
-      <li><b>Sketch->Show Sketch Folder</b> and then</li>
-      <li>use the 'update' link below to navigate to your '.bin' file to upload</li>
-    </ul>
-  </p>
-
-  <p>
-    To update your code type this into your address bar:<br>
-    <a id="update-link" href="" target="_blank"></a><br>
-    or just click this link.
-  </p>
-
-  <button id="hello-button" onclick="helloThere();">Hello</button>
-
-  <script>
-    function helloThere() {
-      const xhttp = new XMLHttpRequest();
-      xhttp.onload = function() {
-        document.getElementById("hello-button").innerHTML = this.responseText;
-      }
-      xhttp.open("GET", "/print_debug", true);
-      xhttp.send();
-    }
-
-    const baseURL = window.location.origin;
-    const updateLink = document.getElementById("update-link");
-    updateLink.innerHTML = baseURL + "/update";
-    updateLink.href = baseURL + "/update";
-  </script>
-</body>
-</html>
-)";
-
-const char* SSID = SECRET_SSID;
-const char* PASS = SECRET_PASS;
-
-OTAHandler otaHandler(SSID, PASS);
-
-LEDGrid grid(24, 24, 4);
+LEDGrid grid(8, 24, 6);
+Renderer* renderer = nullptr;
 //RainbowRenderer renderer = RainbowRenderer(grid);
-RainbowRenderer renderer = RainbowRenderer(grid);
+
+typedef void (*onloop_callback_t)(void);
+
+void loopBlankInit();
+void loopBlank();
+void loopSetMatrix();
+void loopRunner();
+
+onloop_callback_t onloop = &loopBlank;
+
+color_t matrixSetColour[3] = {0, 0, 0};
 
 void setup() {
   Serial.begin(115200);
@@ -78,21 +26,56 @@ void setup() {
   Serial.println("-----------Resetting-----------");
   Serial.println("-------------------------------");
 
-  otaHandler.init(webpageHtml);
-
   grid.init();
   grid.clearPixels();
   grid.showPixels();
+
+  Serial.println("Setting mainloop");
+  onloop = loopRunner;
   
   Serial.println("Setup finished...");
 }
 
 void loop() {
-  grid.clearPixels();
-  grid.showPixels();
-//  renderer.updateGrid();
-  grid.setRGBAll(100, 0, 0);
-  grid.showPixels();
+  onloop();
 
   delay(100);
+}
+
+void loopBlankInit() {
+  grid.clearPixels();
+  grid.showPixels();
+  onloop = &loopBlank;
+}
+
+void loopBlank() {
+  
+}
+
+void loopSetMatrix() {
+  grid.setRGBAll(matrixSetColour[0], matrixSetColour[1], matrixSetColour[2]);
+  grid.showPixels();
+//  onloop = &loopBlank;
+}
+
+void loopRunner() {
+  static int i = 0;
+  static color_t r = 100;
+  static color_t g = 0;
+  static color_t b = 0;
+  grid.setRGB(i++, r, g, b);
+  grid.showPixels();
+  if (i >= grid.getWidth() * grid.getHeight()) {
+    i = 0;
+    if (r == 100) {
+      r = 0;
+      g = 100;
+    } else if (g == 100) {
+      g = 0;
+      b = 100;
+    } else {
+      b = 0;
+      r = 100;
+    }
+  }
 }

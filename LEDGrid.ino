@@ -10,12 +10,20 @@ void LEDGrid::init() {
   mPixels.begin();
 }
 
+void LEDGrid::setRGB(pixel_t index, color_channel_t r, color_channel_t g, color_channel_t b) {
+  mPixels.setPixelColor(index, Adafruit_NeoPixel::Color(r, g, b));
+}
+
+void LEDGrid::setHSV(pixel_t index, hue_channel_t h, color_channel_t s, color_channel_t v) {
+  mPixels.setPixelColor(index, Adafruit_NeoPixel::ColorHSV(h, s, v));
+}
+
 void LEDGrid::setRGB(pixel_t pixel_tX, pixel_t pixel_tY, color_channel_t r, color_channel_t g, color_channel_t b) {
-  mPixels.setPixelColor(flatten(pixel_tX, pixel_tY), mPixels.Color(r, g, b));
+  mPixels.setPixelColor(flatten(pixel_tX, pixel_tY), Adafruit_NeoPixel::Color(r, g, b));
 }
 
 void LEDGrid::setHSV(pixel_t pixel_tX, pixel_t pixel_tY, hue_channel_t h, color_channel_t s, color_channel_t v) {
-  mPixels.setPixelColor(flatten(pixel_tX, pixel_tY), mPixels.ColorHSV(h, s, v));
+  mPixels.setPixelColor(flatten(pixel_tX, pixel_tY), Adafruit_NeoPixel::ColorHSV(h, s, v));
 }
 
 void LEDGrid::setRGBAll(color_channel_t r, color_channel_t g, color_channel_t b) {
@@ -26,7 +34,7 @@ void LEDGrid::setRGBAll(color_channel_t r, color_channel_t g, color_channel_t b)
 }
 
 void LEDGrid::setHSVAll(hue_channel_t h, color_channel_t s, color_channel_t v) {
-  color_t c = mPixels.ColorHSV(h, s, v);
+  color_t c = Adafruit_NeoPixel::ColorHSV(h, s, v);
   for (pixel_t i = 0; i < mWidth * mHeight; i++) {
     mPixels.setPixelColor(i, c);
   }
