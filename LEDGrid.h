@@ -35,6 +35,11 @@ public:
   inline pixel_t getHeight() {
     return mHeight;
   }
+
+  inline void setStride(pixel_t x, pixel_t y) {
+    mStrideX = x;
+    mStrideY = y;
+  }
 private:
   inline pixel_t flatten(pixel_t x, pixel_t y) {
     return y & 1 ? (mWidth - x) + (y * mWidth) : x + (y * mWidth);
@@ -44,6 +49,6 @@ private:
     x = y & 1 ? (mWidth - (xy % mWidth)) : (xy % mWidth);
   }
 
-  pixel_t mWidth, mHeight;
+  pixel_t mWidth, mHeight, mStrideX, mStrideY;
   Adafruit_NeoPixel mPixels;
 };

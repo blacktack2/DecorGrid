@@ -1,7 +1,7 @@
 #pragma once
 #include "Renderer.h"
 
-class RainbowRenderer : Renderer {
+class RainbowRenderer : public Renderer {
 public:
   RainbowRenderer(LEDGrid& grid);
 

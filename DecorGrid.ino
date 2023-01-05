@@ -6,16 +6,6 @@
 
 LEDGrid grid(8, 24, 6);
 Renderer* renderer = nullptr;
-//RainbowRenderer renderer = RainbowRenderer(grid);
-
-typedef void (*onloop_callback_t)(void);
-
-void loopBlankInit();
-void loopBlank();
-void loopSetMatrix();
-void loopRunner();
-
-onloop_callback_t onloop = &loopBlank;
 
 color_t matrixSetColour[3] = {0, 0, 0};
 
@@ -30,32 +20,17 @@ void setup() {
   grid.clearPixels();
   grid.showPixels();
 
-  Serial.println("Setting mainloop");
-  onloop = loopRunner;
+  renderer = new RainbowRenderer(grid);
+//  renderer = new CARenderer(grid);
   
   Serial.println("Setup finished...");
 }
 
 void loop() {
-  onloop();
+  renderer->updateGrid();
+  grid.showPixels();
 
   delay(100);
-}
-
-void loopBlankInit() {
-  grid.clearPixels();
-  grid.showPixels();
-  onloop = &loopBlank;
-}
-
-void loopBlank() {
-  
-}
-
-void loopSetMatrix() {
-  grid.setRGBAll(matrixSetColour[0], matrixSetColour[1], matrixSetColour[2]);
-  grid.showPixels();
-//  onloop = &loopBlank;
 }
 
 void loopRunner() {

@@ -1,7 +1,7 @@
 #pragma once
 #include "Renderer.h"
 
-class CARenderer : Renderer {
+class CARenderer : public Renderer {
 public:
   CARenderer(LEDGrid& grid);
   ~CARenderer();
