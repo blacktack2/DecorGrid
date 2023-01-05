@@ -1,9 +1,17 @@
 #include "RainbowRenderer.h"
 
 RainbowRenderer::RainbowRenderer(LEDGrid& grid) : Renderer(grid) {
-  mUpdateCallback = &RainbowRenderer::updateFlat;
+  initFlat();
+}
 
-  grid.setStride(1, 3);
+void RainbowRenderer::initFlat() {
+  mUpdateCallback = &RainbowRenderer::updateFlat;
+  mSpeed = 1000;
+}
+
+void RainbowRenderer::initRings() {
+  mUpdateCallback = &RainbowRenderer::updateRings;
+  mSpeed = 5000;
 }
 
 void RainbowRenderer::updateGrid() {
@@ -11,10 +19,19 @@ void RainbowRenderer::updateGrid() {
 }
 
 void RainbowRenderer::updateFlat() {
-  mHue = (mHue + 100) % 65535;
+  mHue = (mHue + mSpeed) % 65535;
   mGrid.setHSVAll(mHue, 255, 255);
 }
 
 void RainbowRenderer::updateRings() {
-  
+  mSpeed = 5000 + (pixel_t)(4000 * sin(mFrames * 0.05f));
+  mHue = (mHue + mSpeed) & 65535;
+  for (pixel_t x = 0; x < mGrid.getWidth(); x++) {
+    for (pixel_t y = 0; y < mGrid.getHeight(); y++) {
+      float rx = x - mGrid.getWidth() * 0.5f + 0.5f;
+      float ry = y - mGrid.getHeight() * 0.5f + 0.5f;
+      hue_channel_t hue = (mHue + (pixel_t)(5000.0f * sqrt(rx * rx + ry * ry))) & 65535;
+      mGrid.setHSV(x, y, hue, 255, 255);
+    }
+  }
 }

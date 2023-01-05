@@ -29,20 +29,22 @@ public:
   void showPixels();
 
   inline pixel_t getWidth() {
-    return mWidth;
+    return mWidth / mStrideX;
   }
 
   inline pixel_t getHeight() {
-    return mHeight;
+    return mHeight / mStrideY;
   }
 
   inline void setStride(pixel_t x, pixel_t y) {
     mStrideX = x;
     mStrideY = y;
+    Serial.println(String("Grid: ") + String(mWidth / mStrideX) + "x" + String(mHeight / mStrideY));
   }
 private:
   inline pixel_t flatten(pixel_t x, pixel_t y) {
-    return y & 1 ? (mWidth - x) + (y * mWidth) : x + (y * mWidth);
+    return y & 1 ? (mWidth - x - 1) + (y * mWidth) : x + (y * mWidth);
+//    return x + y * mWidth;
   }
   inline void unflatten(pixel_t& x, pixel_t& y, pixel_t xy) {
     y = xy / mHeight;

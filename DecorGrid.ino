@@ -17,17 +17,20 @@ void setup() {
   Serial.println("-------------------------------");
 
   grid.init();
+  grid.setStride(1, 3);
   grid.clearPixels();
   grid.showPixels();
 
   renderer = new RainbowRenderer(grid);
+  ((RainbowRenderer*)renderer)->initRings();
+
 //  renderer = new CARenderer(grid);
   
   Serial.println("Setup finished...");
 }
 
 void loop() {
-  renderer->updateGrid();
+  renderer->update();
   grid.showPixels();
 
   delay(100);

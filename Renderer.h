@@ -5,7 +5,13 @@ class Renderer {
 public:
   Renderer(LEDGrid& grid) : mGrid(grid) {}
 
-  virtual void updateGrid() = 0;
+  void update() {
+    mFrames++;
+    updateGrid();
+  }
 protected:
+  virtual void updateGrid() = 0;
   LEDGrid& mGrid;
+
+  unsigned long mFrames = 0;
 };
