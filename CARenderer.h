@@ -5,9 +5,9 @@ class CARenderer : public Renderer {
 public:
   CARenderer(LEDGrid& grid);
   ~CARenderer();
-
-  virtual void updateGrid();
 private:
+  virtual void updateGrid();
+  
   typedef uint8_t cell;
   typedef uint16_t ruleset;
 

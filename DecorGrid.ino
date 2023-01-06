@@ -21,10 +21,10 @@ void setup() {
   grid.clearPixels();
   grid.showPixels();
 
-  renderer = new RainbowRenderer(grid);
-  ((RainbowRenderer*)renderer)->initRings();
+//  renderer = new RainbowRenderer(grid);
+//  ((RainbowRenderer*)renderer)->initRings();
 
-//  renderer = new CARenderer(grid);
+  renderer = new CARenderer(grid);
   
   Serial.println("Setup finished...");
 }

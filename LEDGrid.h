@@ -44,7 +44,6 @@ public:
 private:
   inline pixel_t flatten(pixel_t x, pixel_t y) {
     return y & 1 ? (mWidth - x - 1) + (y * mWidth) : x + (y * mWidth);
-//    return x + y * mWidth;
   }
   inline void unflatten(pixel_t& x, pixel_t& y, pixel_t xy) {
     y = xy / mHeight;
